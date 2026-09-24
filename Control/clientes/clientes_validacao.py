@@ -1,6 +1,6 @@
 """Regras de validação dos campos de clientes."""
 
-from app.comum import validadores as v
+from Control.comum import validadores as v
 
 REGRAS_CLIENTE = {
     "nome": v.validar_nome_pessoa,

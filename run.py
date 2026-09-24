@@ -1,6 +1,6 @@
 """Ponto de entrada da aplicação: python run.py"""
 
-from app import criar_app
+from Control import criar_app
 
 app = criar_app()
 

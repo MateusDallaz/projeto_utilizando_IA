@@ -13,9 +13,10 @@ Todo novo módulo deve seguir exatamente estas regras.
 | Nomes em português | `clientes_repositorio.py` | `customers_repository.py` |
 | Módulos no plural | `clientes`, `fornecedores`, `produtos` | `cliente`, `fornecedor` |
 
-**Exceções:** nomes exigidos por ferramentas ficam como a ferramenta espera:
-`app/`, `static/`, `templates/`, `run.py`, `requirements.txt`, `README.md`,
-`.gitignore`, `.env`, `pytest.ini` e arquivos de teste com prefixo `test_`.
+**Exceções:**
+- As três pastas de camada usam inicial maiúscula: `View/`, `Control/` e `Model/`.
+- Nomes exigidos por ferramentas ficam como a ferramenta espera:
+  `static/`, `templates/`, `run.py`, `requirements.txt`, `README.md`, `.gitignore`, `.env`.
 
 ## 2. Arquivos de um módulo
 
@@ -24,26 +25,28 @@ Assim, com várias abas abertas no editor, fica claro de qual módulo é cada ar
 
 | Camada | Local | Nome |
 |--------|-------|------|
-| Rotas (URLs) | `app/modulos/<modulo>/` | `<modulo>_rotas.py` |
-| Acesso ao banco (SQL) | `app/modulos/<modulo>/` | `<modulo>_repositorio.py` |
-| Regras de validação | `app/modulos/<modulo>/` | `<modulo>_validacao.py` |
-| Tela | `app/templates/<modulo>/` | `<modulo>_<tela>.html` |
-| JavaScript da tela | `app/static/js/<modulo>/` | `<modulo>_<tela>.js` |
-| CSS da tela (só se precisar) | `app/static/css/<modulo>/` | `<modulo>_<tela>.css` |
-| Testes | `testes/` | `test_<modulo>_<papel>.py` |
+| Rotas (URLs) | `Control/<modulo>/` | `<modulo>_rotas.py` |
+| Regras de validação | `Control/<modulo>/` | `<modulo>_validacao.py` |
+| Acesso ao banco (SQL) | `Model/<modulo>/` | `<modulo>_repositorio.py` |
+| Tela | `View/templates/<modulo>/` | `<modulo>_<tela>.html` |
+| JavaScript da tela | `View/static/js/<modulo>/` | `<modulo>_<tela>.js` |
+| CSS da tela (só se precisar) | `View/static/css/<modulo>/` | `<modulo>_<tela>.css` |
+
+Regra das camadas: **View** só conversa com o back end pela API; **Control** valida e chama o
+**Model**; só o **Model** tem SQL. O Model nunca importa nada do Control.
 
 O HTML, o JS e o CSS de uma mesma tela têm **o mesmo nome**, mudando só a extensão:
 `clientes_cadastro.html` ↔ `clientes_cadastro.js` ↔ `clientes_cadastro.css`.
 
 ## 3. Código compartilhado (`comum/`)
 
-O que serve a mais de um módulo fica em uma pasta `comum/`, sem prefixo de módulo:
+O que serve a mais de um módulo fica em uma pasta `comum/` (ou na raiz do `Model/`), sem prefixo de módulo:
 
-- `app/comum/validadores.py` e `app/static/js/comum/validadores.js` (mesmas regras nos dois lados)
-- `app/comum/erros.py`
-- `app/templates/comum/base.html`
-- `app/static/css/comum/base.css`, `formularios.css`, `tabelas.css`
-- `app/static/js/comum/api.js`, `aviso.js`, `formulario.js`, `mascaras.js`
+- `Control/comum/validadores.py` e `View/static/js/comum/validadores.js` (mesmas regras nos dois lados)
+- `Model/conexao.py` e `Model/erros.py`
+- `View/templates/comum/base.html`
+- `View/static/css/comum/base.css`, `formularios.css`, `tabelas.css`
+- `View/static/js/comum/api.js`, `aviso.js`, `etapas.js`, `formulario.js`, `mascaras.js`
 
 Regra prática: se um trecho de código for copiado para um segundo módulo, ele deve ir para `comum/`.
 
@@ -85,12 +88,10 @@ Regra prática: se um trecho de código for copiado para um segundo módulo, ele
 
 ## 7. Checklist: criando um novo módulo (ex.: `fornecedores`)
 
-1. `banco_dados/migracoes/002_criar_tabela_fornecedores.sql`
-2. `app/modulos/fornecedores/__init__.py` (vazio)
-3. `app/modulos/fornecedores/fornecedores_validacao.py`
-4. `app/modulos/fornecedores/fornecedores_repositorio.py`
-5. `app/modulos/fornecedores/fornecedores_rotas.py` com `fornecedores_bp`
-6. Registrar `fornecedores_bp` em `app/__init__.py`
-7. `app/templates/fornecedores/fornecedores_cadastro.html` (estendendo `comum/base.html`)
-8. `app/static/js/fornecedores/fornecedores_cadastro.js`
-9. `testes/test_fornecedores_validacao.py`
+1. `Model/migracoes/002_criar_tabela_fornecedores.sql`
+2. `Model/fornecedores/__init__.py` (vazio) e `Model/fornecedores/fornecedores_repositorio.py`
+3. `Control/fornecedores/__init__.py` (vazio) e `Control/fornecedores/fornecedores_validacao.py`
+4. `Control/fornecedores/fornecedores_rotas.py` com `fornecedores_bp`
+5. Registrar `fornecedores_bp` em `Control/__init__.py`
+6. `View/templates/fornecedores/fornecedores_cadastro.html` (estendendo `comum/base.html`)
+7. `View/static/js/fornecedores/fornecedores_cadastro.js`

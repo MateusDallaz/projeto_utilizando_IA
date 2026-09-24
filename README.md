@@ -9,52 +9,60 @@ Sistema web com conexão direta ao MySQL. Módulo atual: **cadastro de clientes*
 Os padrões de nomes de arquivos, tabelas e código estão em
 [`docs/padroes_nomenclatura.md`](docs/padroes_nomenclatura.md).
 
-## Estrutura
+## Estrutura (MVC)
+
+O projeto é dividido em três camadas:
+
+| Pasta | Camada | O que tem |
+|-------|--------|-----------|
+| `View/` | Front end | Telas HTML, CSS e JavaScript |
+| `Control/` | Back end | Aplicação Flask, rotas e validação dos dados |
+| `Model/` | Banco de dados | Conexão com o MySQL, SQL dos repositórios e scripts do banco |
 
 ```
 projeto_utilizando_IA/
 ├── run.py                         # Ponto de entrada: python run.py
 ├── requirements.txt
-├── pytest.ini
 ├── .env.example                   # Modelo de configuração (sem senha real)
 ├── .gitignore                     # Bloqueia .env, senhas e certificados
 │
-├── app/
-│   ├── __init__.py                # Cria a aplicação e registra os módulos
-│   ├── config.py                  # Lê o .env
-│   ├── conexao.py                 # Conexão com o MySQL
-│   ├── comum/                     # Código compartilhado entre módulos
-│   │   ├── erros.py
-│   │   └── validadores.py
-│   ├── modulos/
-│   │   └── clientes/
-│   │       ├── clientes_rotas.py
-│   │       ├── clientes_repositorio.py
-│   │       └── clientes_validacao.py
+├── View/                          # FRONT END
 │   ├── templates/
 │   │   ├── comum/base.html
 │   │   └── clientes/clientes_cadastro.html
 │   └── static/
 │       ├── css/comum/             # base.css, formularios.css, tabelas.css
 │       └── js/
-│           ├── comum/             # api.js, aviso.js, formulario.js, mascaras.js, validadores.js
+│           ├── comum/             # api.js, aviso.js, etapas.js, formulario.js, mascaras.js, validadores.js
 │           └── clientes/clientes_cadastro.js
 │
-├── banco_dados/
+├── Control/                       # BACK END
+│   ├── __init__.py                # Cria a aplicação e registra os módulos
+│   ├── config.py                  # Lê o .env
+│   ├── comum/validadores.py       # Regras de validação reutilizáveis
+│   └── clientes/
+│       ├── clientes_rotas.py      # URLs da tela e da API
+│       └── clientes_validacao.py  # Regras dos campos de clientes
+│
+├── Model/                         # BANCO DE DADOS
+│   ├── conexao.py                 # Pool de conexões com o MySQL
+│   ├── erros.py                   # Erros de banco (registro duplicado, não encontrado)
+│   ├── clientes/clientes_repositorio.py   # Todo o SQL de clientes
 │   ├── migracoes/001_criar_tabela_clientes.sql
 │   └── dados_exemplo/001_clientes.sql
 │
-├── docs/padroes_nomenclatura.md
-└── testes/test_clientes_validacao.py
+└── docs/padroes_nomenclatura.md
 ```
+
+O caminho de uma requisição: **View** (tela) → **Control** (rota + validação) → **Model** (SQL) → MySQL.
 
 ## Como rodar
 
-1. Crie o banco executando, em ordem, os arquivos de `banco_dados/migracoes/`.
-   Para ter dados de teste, execute também `banco_dados/dados_exemplo/`.
+1. Crie o banco executando, em ordem, os arquivos de `Model/migracoes/`.
+   Para ter dados de exemplo, execute também `Model/dados_exemplo/`.
    ```bash
-   mysql -u root -p < banco_dados/migracoes/001_criar_tabela_clientes.sql
-   mysql -u root -p < banco_dados/dados_exemplo/001_clientes.sql
+   mysql -u root -p < Model/migracoes/001_criar_tabela_clientes.sql
+   mysql -u root -p < Model/dados_exemplo/001_clientes.sql
    ```
 2. Crie e ative um ambiente virtual:
    ```bash
@@ -67,8 +75,6 @@ projeto_utilizando_IA/
 5. Inicie: `python run.py`
 6. Acesse http://127.0.0.1:5000
 
-Para rodar os testes: `python -m pytest`
-
 ## Regras de cadastro de clientes
 
 | Campo    | Regra |
@@ -77,6 +83,8 @@ Para rodar os testes: `python -m pytest`
 | E-mail   | Formato válido, sem espaços, único no banco. Salvo em minúsculas. |
 | Telefone | DDD + número (10 ou 11 dígitos). Celular começa com 9. Salvo como `(47) 99999-1111`. |
 | Cidade   | Só letras, sem sigla do estado. Salva com iniciais maiúsculas. |
+
+Os campos são liberados **um por vez**, nessa ordem: o próximo só abre quando o atual está correto.
 
 Os dados são validados no front end (para orientar o usuário) e novamente no back end
 (para proteger o banco). A API aceita apenas um registro por requisição.
