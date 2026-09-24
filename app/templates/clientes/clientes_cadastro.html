@@ -1,0 +1,104 @@
+{% extends "comum/base.html" %}
+
+{% block titulo %}Cadastro de clientes{% endblock %}
+{% block cabecalho %}Cadastro de clientes{% endblock %}
+{% block descricao %}
+  <p>Cadastre um cliente por vez, preenchendo um campo de cada vez: pressione <strong>Enter</strong> ou <strong>Tab</strong> para ir ao próximo. Para corrigir um cadastro, clique em <strong>Editar</strong> na lista.</p>
+{% endblock %}
+
+{% block conteudo %}
+<div class="layout-cadastro">
+  <!-- ===================== FICHA ===================== -->
+  <section class="ficha" aria-labelledby="titulo-ficha">
+    <div class="ficha-cabecalho">
+      <h2 id="titulo-ficha">Novo cliente</h2>
+      <span id="modo" class="modo" hidden>Alterando cadastro</span>
+    </div>
+
+    <form id="form-cliente" novalidate>
+      <div class="campo" data-campo="nome">
+        <label for="nome">Nome completo</label>
+        <input id="nome" name="nome" type="text" maxlength="100" autocomplete="name"
+               aria-describedby="guia-nome erro-nome">
+        <p class="guia" id="guia-nome">Nome e sobrenome, só com letras. Ex.: Maria da Silva</p>
+        <p class="erro" id="erro-nome" role="alert"></p>
+      </div>
+
+      <div class="campo" data-campo="email">
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" maxlength="150" autocomplete="email"
+               aria-describedby="guia-email erro-email">
+        <p class="guia" id="guia-email">Sem espaços, com @ e domínio. Cada e-mail só pode ser usado uma vez.</p>
+        <p class="erro" id="erro-email" role="alert"></p>
+      </div>
+
+      <div class="campo" data-campo="telefone">
+        <label for="telefone">Telefone</label>
+        <input id="telefone" name="telefone" type="tel" inputmode="numeric" maxlength="15"
+               autocomplete="tel-national" placeholder="(47) 99999-1111"
+               aria-describedby="guia-telefone erro-telefone">
+        <p class="guia" id="guia-telefone">Digite só os números com DDD. A formatação é automática.</p>
+        <p class="erro" id="erro-telefone" role="alert"></p>
+      </div>
+
+      <div class="campo" data-campo="cidade">
+        <label for="cidade">Cidade</label>
+        <input id="cidade" name="cidade" type="text" maxlength="100" autocomplete="address-level2"
+               aria-describedby="guia-cidade erro-cidade">
+        <p class="guia" id="guia-cidade">Somente o nome da cidade, sem estado. Ex.: Rio do Sul</p>
+        <p class="erro" id="erro-cidade" role="alert"></p>
+      </div>
+
+      <p id="erro-geral" class="erro-geral" role="alert" hidden></p>
+
+      <div class="acoes">
+        <button type="submit" id="btn-salvar" class="btn-principal">Cadastrar cliente</button>
+        <button type="button" id="btn-cancelar" class="btn-secundario" hidden>Cancelar alteração</button>
+      </div>
+    </form>
+
+    <details class="regras">
+      <summary>Como fazer um cadastro correto</summary>
+      <ul>
+        <li>Preencha os quatro campos. Nenhum pode ficar em branco.</li>
+        <li>Os campos são liberados um por vez: o próximo só abre quando o atual estiver correto.</li>
+        <li>Para corrigir um campo já preenchido, clique nele. <strong>Shift+Tab</strong> volta ao campo anterior.</li>
+        <li>Não se preocupe com maiúsculas: “MARIA DA SILVA” é salvo como “Maria da Silva”.</li>
+        <li>Antes de cadastrar, procure o cliente na lista para não duplicar.</li>
+        <li>Os campos com problema ficam marcados em vermelho com a explicação logo abaixo.</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- ===================== LISTA ===================== -->
+  <section class="lista" aria-labelledby="titulo-lista">
+    <div class="lista-cabecalho">
+      <h2 id="titulo-lista">Clientes cadastrados <span id="contador" class="contador"></span></h2>
+      <label class="busca">
+        <span class="sr-only">Procurar cliente</span>
+        <input id="busca" type="search" placeholder="Procurar por nome, e-mail ou cidade">
+      </label>
+    </div>
+
+    <div class="tabela-rolagem">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Cidade</th>
+            <th scope="col"><span class="sr-only">Ações</span></th>
+          </tr>
+        </thead>
+        <tbody id="tabela-clientes"></tbody>
+      </table>
+    </div>
+    <p id="lista-vazia" class="lista-vazia" hidden></p>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/clientes/clientes_cadastro.js') }}"></script>
+{% endblock %}

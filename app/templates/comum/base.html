@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Sistema{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/comum/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/comum/formularios.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/comum/tabelas.css') }}">
+  {% block estilos %}{% endblock %}
+</head>
+<body>
+  <header class="topo">
+    <h1>{% block cabecalho %}{% endblock %}</h1>
+    {% block descricao %}{% endblock %}
+  </header>
+
+  <main>
+    {% block conteudo %}{% endblock %}
+  </main>
+
+  <div id="aviso" class="aviso" role="status" aria-live="polite"></div>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

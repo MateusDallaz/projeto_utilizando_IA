@@ -1,0 +1,66 @@
+/* ============================================================
+   tabelas.css — listas de registros com busca
+   ============================================================ */
+.lista {
+  background: var(--papel);
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  padding: 1.5rem;
+  min-width: 0;
+}
+.lista-cabecalho {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.lista-cabecalho h2 { font-size: 1.25rem; }
+.contador { font-weight: 400; color: var(--tinta-suave); font-size: 1rem; }
+
+.busca input {
+  font: inherit;
+  width: 280px;
+  max-width: 100%;
+  padding: .5rem .75rem;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+}
+
+.tabela-rolagem { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--tinta-suave);
+  border-bottom: 2px solid var(--borda);
+  padding: .5rem .6rem;
+  white-space: nowrap;
+}
+td {
+  padding: .65rem .6rem;
+  border-bottom: 1px solid #E3E9E7;
+  vertical-align: middle;
+}
+td.quebra { word-break: break-all; }
+td.numero { white-space: nowrap; font-variant-numeric: tabular-nums; }
+tr.em-edicao td { background: var(--edicao-fundo); }
+tr.destaque td { animation: destaque 1.6s ease-out; }
+@keyframes destaque { from { background: #DDF0E5; } to { background: transparent; } }
+
+.btn-editar {
+  background: transparent;
+  color: var(--principal);
+  border: 1px solid var(--borda);
+  padding: .3rem .8rem;
+  font-size: .85rem;
+}
+.btn-editar:hover { border-color: var(--principal); }
+
+.lista-vazia { color: var(--tinta-suave); margin: 1.5rem 0 .5rem; }
+
+@media (max-width: 860px) {
+  .busca { flex: 1 1 100%; }
+  .busca input { width: 100%; }
+}

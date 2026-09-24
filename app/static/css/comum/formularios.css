@@ -1,0 +1,125 @@
+/* ============================================================
+   formularios.css — layout de cadastro, ficha, campos e erros
+   Reutilizável por qualquer tela de cadastro (clientes, fornecedores...).
+   ============================================================ */
+
+/* ---------- Layout: ficha à esquerda, lista à direita ---------- */
+.layout-cadastro {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+  display: grid;
+  grid-template-columns: minmax(300px, 400px) 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ---------- Ficha ---------- */
+.ficha {
+  background: var(--papel);
+  border: 1px solid var(--borda);
+  border-left: 6px solid var(--principal);
+  border-radius: var(--raio);
+  padding: 1.5rem;
+  position: sticky;
+  top: 1rem;
+  transition: border-color .2s;
+}
+.ficha.editando {
+  border-left-color: var(--edicao);
+  background: linear-gradient(var(--edicao-fundo), var(--papel) 120px);
+}
+.ficha.editando .btn-principal { background: var(--edicao); border-color: var(--edicao); }
+
+.ficha-cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+}
+.ficha-cabecalho h2 { font-size: 1.25rem; }
+.modo {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--edicao);
+  border: 1px solid var(--edicao);
+  border-radius: 999px;
+  padding: .1rem .6rem;
+}
+
+/* ---------- Campos ---------- */
+.campo { margin-bottom: 1.1rem; }
+.campo label {
+  display: block;
+  font-weight: 600;
+  font-size: .95rem;
+  margin-bottom: .3rem;
+}
+.campo input {
+  width: 100%;
+  font: inherit;
+  padding: .6rem .75rem;
+  border: 1px solid var(--borda);
+  border-radius: var(--raio);
+  background: var(--papel);
+  color: var(--tinta);
+}
+.campo input:focus {
+  outline: 3px solid rgba(36, 92, 115, .25);
+  border-color: var(--principal);
+}
+.campo.valido input { border-color: var(--ok); }
+
+/* ---------- Preenchimento campo a campo (etapas.js) ---------- */
+.campo { transition: opacity .2s; }
+.campo input:disabled { background: var(--fundo); color: var(--tinta-suave); }
+.campo.pendente { opacity: .45; }
+.campo.pendente input { cursor: not-allowed; }
+.campo.pendente .guia { display: none; }
+/* Campo já preenchido: clicar nele volta para corrigir */
+.campo.concluido { cursor: pointer; }
+.campo.concluido input { pointer-events: none; }
+.campo.concluido .guia { display: none; }
+.campo.concluido label::after { content: " ✓ (clique para alterar)"; font-weight: 400; font-size: .8rem; color: var(--ok); }
+.campo.invalido input { border-color: var(--erro); background: var(--erro-fundo); }
+
+.guia {
+  margin: .3rem 0 0;
+  font-size: .85rem;
+  color: var(--tinta-suave);
+}
+.erro {
+  margin: .25rem 0 0;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--erro);
+}
+.erro:empty { display: none; }
+
+.erro-geral {
+  background: var(--erro-fundo);
+  color: var(--erro);
+  border-radius: var(--raio);
+  padding: .6rem .75rem;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.acoes { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1.5rem; }
+
+/* ---------- Guia de preenchimento ---------- */
+.regras {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--borda);
+  padding-top: 1rem;
+  font-size: .9rem;
+}
+.regras summary { cursor: pointer; font-weight: 600; color: var(--principal); }
+.regras ul { margin: .75rem 0 0; padding-left: 1.2rem; color: var(--tinta-suave); }
+.regras li + li { margin-top: .35rem; }
+
+@media (max-width: 860px) {
+  .layout-cadastro { grid-template-columns: 1fr; }
+  .ficha { position: static; }
+}

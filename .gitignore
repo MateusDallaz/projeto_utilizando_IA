@@ -1,0 +1,44 @@
+# ============================================================
+# SEGURANÇA — nunca enviar senhas ou certificados ao GitHub
+# ============================================================
+
+# Variáveis de ambiente (contêm a senha do banco)
+.env
+.env.*
+!.env.example
+
+# Certificados digitais e chaves privadas
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.pfx
+*.p12
+*.jks
+*.keystore
+certificados/
+certs/
+
+# Arquivos de credenciais em geral
+*secret*
+*credenciais*
+*senha*
+
+# ============================================================
+# Python
+# ============================================================
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+.pytest_cache/
+
+# ============================================================
+# Editores e sistema
+# ============================================================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,91 @@
+/* ============================================================
+   base.css — cores, tipografia, botões e avisos
+   Usado por todas as telas do sistema.
+   ============================================================ */
+:root {
+  --fundo: #E9EEEC;
+  --papel: #FFFFFF;
+  --tinta: #1E2A33;
+  --tinta-suave: #5B6B72;
+  --borda: #C5D0CD;
+  --principal: #245C73;
+  --principal-escuro: #1A4557;
+  --edicao: #B7791F;
+  --edicao-fundo: #FBF3DF;
+  --ok: #2F7A55;
+  --erro: #B23A2E;
+  --erro-fundo: #FBECEA;
+  --raio: 6px;
+  font-family: "Public Sans", "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--tinta);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+h1, h2 { margin: 0; line-height: 1.2; }
+
+/* ---------- Topo ---------- */
+.topo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1.5rem;
+}
+.topo h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.01em; }
+.topo p { margin: .5rem 0 0; color: var(--tinta-suave); max-width: 60ch; }
+
+/* ---------- Botões ---------- */
+button {
+  font: inherit;
+  font-weight: 600;
+  border-radius: var(--raio);
+  padding: .65rem 1.1rem;
+  cursor: pointer;
+}
+button:focus-visible { outline: 3px solid rgba(36, 92, 115, .4); outline-offset: 2px; }
+button:disabled { opacity: .6; cursor: wait; }
+
+.btn-principal { background: var(--principal); color: #fff; border: 1px solid var(--principal); }
+.btn-principal:hover:not(:disabled) { background: var(--principal-escuro); }
+
+.btn-secundario { background: transparent; color: var(--tinta); border: 1px solid var(--borda); }
+.btn-secundario:hover { border-color: var(--tinta-suave); }
+
+/* ---------- Aviso (confirmações) ---------- */
+.aviso {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translate(-50%, 150%);
+  background: var(--tinta);
+  color: #fff;
+  padding: .75rem 1.25rem;
+  border-radius: var(--raio);
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .25s ease-out, opacity .25s ease-out;
+  max-width: calc(100% - 2rem);
+}
+.aviso.visivel { transform: translate(-50%, 0); opacity: 1; }
+.aviso.falha { background: var(--erro); }
+
+/* ---------- Acessibilidade ---------- */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .topo h1 { font-size: 1.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
