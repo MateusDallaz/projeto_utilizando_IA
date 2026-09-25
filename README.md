@@ -117,3 +117,7 @@ Os dados são validados no front end (para orientar o usuário) e novamente no b
   O `.gitignore` já bloqueia esses arquivos.
 - Antes de cada commit, confira com `git status` se nenhum arquivo sensível aparece na lista.
 - Todas as consultas SQL usam parâmetros (`%s`), o que protege contra SQL Injection.
+- Todo cookie é gravado com **HttpOnly** (o JavaScript não consegue lê-lo) e **Secure**
+  (só trafega por HTTPS), além de `SameSite=Lax`. Veja `Control/config.py`.
+  Ao publicar em um servidor, use HTTPS: sem ele o navegador não envia o cookie e o login não funciona.
+  No computador local (`127.0.0.1`/`localhost`) os navegadores aceitam cookies Secure mesmo sem HTTPS.

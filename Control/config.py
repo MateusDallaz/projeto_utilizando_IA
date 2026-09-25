@@ -18,7 +18,9 @@ class Config:
     # Chave que assina o cookie de sessão. Sem SECRET_KEY no .env, é gerada
     # uma nova a cada início do servidor (reiniciar = todos voltam ao login).
     SECRET_KEY = os.getenv("SECRET_KEY") or secrets.token_hex(32)
+    # Regra do projeto: todo cookie é gravado com HttpOnly e Secure.
     SESSION_COOKIE_HTTPONLY = True   # JavaScript não lê o cookie de sessão
+    SESSION_COOKIE_SECURE = True     # cookie só trafega por HTTPS (e em 127.0.0.1/localhost)
     SESSION_COOKIE_SAMESITE = "Lax"  # outros sites não enviam o cookie em POSTs
 
     DB_CONFIG = {
