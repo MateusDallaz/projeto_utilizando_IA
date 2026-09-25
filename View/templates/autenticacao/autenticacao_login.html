@@ -1,0 +1,40 @@
+{% extends "comum/base.html" %}
+
+{% block titulo %}Entrar no sistema{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/autenticacao/autenticacao_login.css') }}">
+{% endblock %}
+
+{% block topo %}{% endblock %}
+
+{% block conteudo %}
+<section class="login" aria-labelledby="titulo-login">
+  <h1 id="titulo-login">Entrar no sistema</h1>
+  <p class="login-descricao">Por segurança, o login é pedido sempre que uma tela é aberta ou trocada.</p>
+
+  <form id="form-login" method="post" action="{{ url_for('autenticacao.entrar') }}" novalidate>
+    <input type="hidden" name="proxima" value="{{ proxima }}">
+
+    <div class="campo" data-campo="usuario">
+      <label for="usuario">Usuário</label>
+      <input id="usuario" name="usuario" type="text" maxlength="50" autocomplete="username"
+             value="{{ usuario }}" {% if not usuario %}autofocus{% endif %} aria-describedby="erro-login">
+    </div>
+
+    <div class="campo" data-campo="senha">
+      <label for="senha">Senha</label>
+      <input id="senha" name="senha" type="password" maxlength="50" autocomplete="current-password"
+             {% if usuario %}autofocus{% endif %} aria-describedby="erro-login">
+    </div>
+
+    <p id="erro-login" class="erro-geral" role="alert" {% if not erro %}hidden{% endif %}>{{ erro }}</p>
+
+    <button type="submit" id="btn-entrar" class="btn-principal">Entrar</button>
+  </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/autenticacao/autenticacao_login.js') }}"></script>
+{% endblock %}

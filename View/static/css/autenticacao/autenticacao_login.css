@@ -1,0 +1,26 @@
+/* ============================================================
+   autenticacao_login.css — tela de login
+   Usa os campos e botões de formularios.css e base.css.
+   ============================================================ */
+
+.login {
+  max-width: 380px;
+  margin: 12vh auto 3rem;
+  padding: 2rem 1.75rem;
+  background: var(--papel);
+  border: 1px solid var(--borda);
+  border-top: 6px solid var(--principal);
+  border-radius: var(--raio);
+}
+.login h1 { font-size: 1.5rem; }
+.login-descricao {
+  margin: .5rem 0 1.5rem;
+  font-size: .9rem;
+  color: var(--tinta-suave);
+}
+.login .erro-geral { margin: 0 0 1rem; }
+.login .btn-principal { width: 100%; }
+
+@media (max-width: 480px) {
+  .login { margin: 1.5rem 1rem; }
+}

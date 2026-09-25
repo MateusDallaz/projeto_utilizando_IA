@@ -92,6 +92,7 @@ Regra prática: se um trecho de código for copiado para um segundo módulo, ele
 2. `Model/fornecedores/__init__.py` (vazio) e `Model/fornecedores/fornecedores_repositorio.py`
 3. `Control/fornecedores/__init__.py` (vazio) e `Control/fornecedores/fornecedores_validacao.py`
 4. `Control/fornecedores/fornecedores_rotas.py` com `fornecedores_bp`
+   (rota da tela com `@tela_protegida` e rotas da API com `@api_protegida`)
 5. Registrar `fornecedores_bp` em `Control/__init__.py`
 6. `View/templates/fornecedores/fornecedores_cadastro.html` (estendendo `comum/base.html`)
 7. `View/static/js/fornecedores/fornecedores_cadastro.js`

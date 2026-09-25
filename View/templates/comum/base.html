@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block titulo %}Sistema{% endblock %}</title>
+  {% if g.token %}<meta name="token-tela" content="{{ g.token }}">{% endif %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,10 +14,18 @@
   {% block estilos %}{% endblock %}
 </head>
 <body>
+  {% block topo %}
   <header class="topo">
+    {% if g.usuario %}
+    <div class="sessao">
+      <span>Conectado como <strong>{{ g.usuario }}</strong></span>
+      <a class="btn-secundario" href="{{ url_for('autenticacao.sair') }}">Sair</a>
+    </div>
+    {% endif %}
     <h1>{% block cabecalho %}{% endblock %}</h1>
     {% block descricao %}{% endblock %}
   </header>
+  {% endblock %}
 
   <main>
     {% block conteudo %}{% endblock %}

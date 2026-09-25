@@ -36,13 +36,15 @@ def criar_app():
     conexao.configurar(Config.DB_CONFIG)
 
     # ---- Módulos (cada novo módulo é registrado aqui) ----
+    from Control.autenticacao.autenticacao_rotas import autenticacao_bp
     from Control.clientes.clientes_rotas import clientes_bp
 
+    app.register_blueprint(autenticacao_bp)
     app.register_blueprint(clientes_bp)
 
     @app.get("/")
     def inicio():
-        return redirect(url_for("clientes.tela_cadastro"))
+        return redirect(url_for("autenticacao.tela_login"))
 
     # ---- Erro de banco em qualquer rota: loga o detalhe, responde com mensagem segura ----
     @app.errorhandler(mysql.connector.Error)

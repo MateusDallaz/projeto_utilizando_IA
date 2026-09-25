@@ -1,6 +1,6 @@
 # Projeto utilizando IA
 
-Sistema web com conexão direta ao MySQL. Módulo atual: **cadastro de clientes**.
+Sistema web com conexão direta ao MySQL. Módulos atuais: **login** e **cadastro de clientes**.
 
 - **Back end:** Python (Flask)
 - **Front end:** HTML, CSS e JavaScript
@@ -29,17 +29,22 @@ projeto_utilizando_IA/
 ├── View/                          # FRONT END
 │   ├── templates/
 │   │   ├── comum/base.html
+│   │   ├── autenticacao/autenticacao_login.html
 │   │   └── clientes/clientes_cadastro.html
 │   └── static/
 │       ├── css/comum/             # base.css, formularios.css, tabelas.css
+│       ├── css/autenticacao/autenticacao_login.css
 │       └── js/
 │           ├── comum/             # api.js, aviso.js, etapas.js, formulario.js, mascaras.js, validadores.js
+│           ├── autenticacao/autenticacao_login.js
 │           └── clientes/clientes_cadastro.js
 │
 ├── Control/                       # BACK END
 │   ├── __init__.py                # Cria a aplicação e registra os módulos
 │   ├── config.py                  # Lê o .env
 │   ├── comum/validadores.py       # Regras de validação reutilizáveis
+│   ├── comum/seguranca.py         # Proteção das telas e da API (login)
+│   ├── autenticacao/autenticacao_rotas.py   # /login e /sair
 │   └── clientes/
 │       ├── clientes_rotas.py      # URLs da tela e da API
 │       └── clientes_validacao.py  # Regras dos campos de clientes
@@ -48,7 +53,8 @@ projeto_utilizando_IA/
 │   ├── conexao.py                 # Pool de conexões com o MySQL
 │   ├── erros.py                   # Erros de banco (registro duplicado, não encontrado)
 │   ├── clientes/clientes_repositorio.py   # Todo o SQL de clientes
-│   ├── migracoes/001_criar_tabela_clientes.sql
+│   ├── usuarios/usuarios_repositorio.py   # Busca do usuário no login
+│   ├── migracoes/                 # 001_criar_tabela_clientes.sql, 002_criar_tabela_usuario.sql
 │   └── dados_exemplo/001_clientes.sql
 │
 └── docs/padroes_nomenclatura.md
@@ -74,6 +80,22 @@ O caminho de uma requisição: **View** (tela) → **Control** (rota + validaç�
 4. Copie `.env.example` para `.env` e preencha usuário e senha do MySQL.
 5. Inicie: `python run.py`
 6. Acesse http://127.0.0.1:5000
+
+## Login
+
+O acesso usa a tabela `Usuario` (colunas `usuario` e `senha`). Os usuários são cadastrados
+direto no banco. As senhas **não** ficam nos arquivos do projeto.
+
+Por segurança, **o login é pedido sempre que uma tela é aberta ou trocada**:
+
+- Cada login correto libera uma única abertura de tela.
+- Recarregar (F5), trocar de página, usar o botão Voltar ou digitar o endereço leva de volta ao login.
+- A API (`/api/...`) só responde para a tela que acabou de ser aberta: ela recebe um token
+  próprio, que o JavaScript envia no cabeçalho `X-Token`. Sem o token, a resposta é `401`.
+- O botão **Sair** encerra a sessão na hora.
+
+Para proteger uma nova tela, use `@tela_protegida` na rota da tela e `@api_protegida`
+nas rotas da API (ambos em `Control/comum/seguranca.py`).
 
 ## Regras de cadastro de clientes
 
